@@ -1,6 +1,9 @@
 #include "Arduino_BMI270_BMM150.h"
 #include "sensor_reading_class.h"
 
+// declare a global SensorReading instance
+SensorReading sensorInstance;
+
 void setup() {
   IMU.begin();
   if (!IMU.begin()) {
@@ -31,8 +34,7 @@ void loop() {
 //  Serial.print('\t');
 //  Serial.println(currentTime);
 
-  SensorReading sensorInstance;
-
+  sensorInstance.readSensors
   sensorInstance.displaySensorReadings();
 
 } 
