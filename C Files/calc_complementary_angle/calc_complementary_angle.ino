@@ -16,7 +16,7 @@ void setup() {
 void loop() {
 
   sensorInstance.readSensors();
-  // sensorInstance.displaySensorReadings();
+  sensorInstance.displaySensorReadings();
   float acc_tilt_angle = calc_acc_tilt_angle(sensorInstance.ya, sensorInstance.za);
   Serial.println(acc_tilt_angle);
 

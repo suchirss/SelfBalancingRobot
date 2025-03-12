@@ -1,7 +1,7 @@
-#include <Arduino.h>
-
 #ifndef SENSOR_READING_H
 #define SENSOR_READING_H
+
+#include <Arduino.h>
 
 class SensorReading {
     public:

@@ -22,3 +22,9 @@ float calc_acc_tilt_angle(int ya, int za) {
 
     return acc_tilt_angle;
 }
+
+float calc_gyro_tilt_angle(float last_gyro_angle, float last_timestamp, float current_timestamp, float zg) {
+        float gyro_tilt_angle = last_gyro_angle + ( (current_timestamp - last_timestamp) * zg );
+
+    return gyro_tilt_angle;
+}
