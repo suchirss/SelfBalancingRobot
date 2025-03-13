@@ -11,6 +11,9 @@ int counter = -1;
 float acc_tilt_angle;
 float gyro_tilt_angle;
 float last_gyro_tilt_angle;
+float complementary_angle;
+float last_complementary_angle;
+float k = 0.8; // modify later
 
 void setup() {
 
@@ -46,5 +49,13 @@ void loop() {
   }
 
   last_gyro_tilt_angle = gyro_tilt_angle;
+
+  // remove comments once sensors have been read and angles have been mapped - then test comp angle
+  // if(counter % 20 == 0) {
+  //   complementary_angle = acc_tilt_angle;
+  // }
+  // else {
+  //   newComplementaryAngle = k * (lCA + (gyro_tilt_angle)) + (1 - k) * acc_tilt_angle;
+  // }
 
 } 
