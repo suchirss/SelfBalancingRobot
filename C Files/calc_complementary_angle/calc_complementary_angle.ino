@@ -5,6 +5,10 @@
 // declare a global SensorReading instance
 SensorReading sensorInstance;
 
+float acc_tilt_angle;
+float gyro_tilt_angle;
+float last_gyro_tilt_angle;
+  
 void setup() {
   IMU.begin();
   if (!IMU.begin()) {
