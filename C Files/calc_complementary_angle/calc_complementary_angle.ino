@@ -31,10 +31,10 @@ void loop() {
 
   sensorInstance.readSensors();
   sensorInstance.displaySensorReadings();
-  acc_tilt_angle = calc_acc_tilt_angle(sensorInstance.ya, sensorInstance.za);
+  float acc_tilt_angle = calc_acc_tilt_angle(sensorInstance.ya, sensorInstance.za);
   Serial.println(acc_tilt_angle);
 
-  if(counter % 20 == 0) {
+  if (counter % 20 == 0) {
     gyro_tilt_angle = acc_tilt_angle;
   }
   else {
