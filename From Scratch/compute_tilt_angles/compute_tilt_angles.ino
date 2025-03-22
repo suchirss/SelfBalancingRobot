@@ -1,15 +1,12 @@
 #include "Arduino_BMI270_BMM150.h"
 #include "sensor_reading_class.h"
 #include "calculate_tilt_angle_functions.h"
-#include "Arduino_LSM9DS1.h"
 
 int counter = -1;
 float acc_tilt_angle;
 float gyro_tilt_angle;
 float last_gyro_tilt_angle;
 bool ginitialized = false;
-
-uint8_t gyroODRindex=5;
 
 void setup() {
     Serial.begin(9600);
@@ -18,8 +15,6 @@ void setup() {
     if (!SensorReading::initIMU()) {
         while (1); // Halt if initialization fails
     }   
-
-    IMU.setGyroODR(gyroODRindex);   //238Hz
 }
 
 void loop() {
