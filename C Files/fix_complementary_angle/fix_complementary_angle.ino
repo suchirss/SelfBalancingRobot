@@ -1,6 +1,7 @@
 #include "Arduino_BMI270_BMM150.h"
 #include "sensor_reading_class.h" // contains SensorReading class definition
 #include "calculate_tilt_angle_functions.h" // contains functions to calculate tilt angle
+#include "motor_control_functions.h" // contains functions to control motor
 
 int counter = -1;
 float acc_tilt_angle;
