@@ -5,7 +5,6 @@
 int counter = -1;
 float acc_tilt_angle;
 float gyro_change_angle;
-bool ginitialized = false;
 float complementary_tilt_angle;
 float k = 0.7;
 
