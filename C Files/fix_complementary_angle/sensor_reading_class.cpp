@@ -15,7 +15,7 @@ bool SensorReading::initIMU() {
 // Reads accelerometer and gyroscope data
 void SensorReading::readSensors() {
     if (IMU.readAcceleration(xa, ya, za) && IMU.readGyroscope(xg, yg, zg)) {
-        timestamp = millis();
+        timestamp = micros();
     } else {
         Serial.println("Sensor readings failed!");
     }
