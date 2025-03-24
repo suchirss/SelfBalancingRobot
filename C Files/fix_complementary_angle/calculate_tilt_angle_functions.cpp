@@ -24,13 +24,13 @@ float calc_acc_tilt_angle(float ay, float az) {
 }
 
 float calc_gyro_tilt_angle(float last_gyro_angle, float last_timestamp, float current_timestamp, float xg) {
-        float gyro_tilt_angle = last_gyro_angle - ( (current_timestamp/1000.0 - last_timestamp/1000.0) * xg );
+        float gyro_tilt_angle = last_gyro_angle - ( (current_timestamp/1000000.0 - last_timestamp/1000000.0) * xg );
 
     return gyro_tilt_angle;
 }
 
 float calc_gyro_change_angle(float last_timestamp, float current_timestamp, float xg) {
-  float gyro_change_angle = (current_timestamp/1000.0 - last_timestamp/1000.0) * xg;
+  float gyro_change_angle = (current_timestamp/1000000.0 - last_timestamp/1000000.0) * xg;
 
   return gyro_change_angle;
 }
