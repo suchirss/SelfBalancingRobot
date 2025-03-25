@@ -12,7 +12,7 @@ const int pwmB2 = 6;   // PWM output for Motor B
 
 // ---------------  PID Tuning  ---------------
 float Kp = 15; //10
-float Ki = 700; //140
+float Ki = 400; //140
 float Kd = 0.01; //0.22
 
 // ---------------  Variable Declarations  ---------------
