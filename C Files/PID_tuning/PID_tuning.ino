@@ -18,7 +18,7 @@ float Kd = 0.01; //0.22
 // ---------------  Variable Declarations  ---------------
 int counter = -1;
 float k = 0.9;
-
+  
 // good copy
 // 2.75 2 0.2
 
@@ -77,6 +77,13 @@ void setup() {
 }
 
 void loop() {
+
+   // Check if new PID values are available from Serial
+  if (Serial.available()) {
+    String input = Serial.readStringUntil('\n');  // Read user input
+    parsePIDInput(input);  // Update PID values
+  }
+  
   // declare class variables
   SensorReading sensorInstance;
   static SensorReading lastSensorInstance; // static is used to ensure value is retained in next loop iteration
@@ -129,5 +136,40 @@ void loop() {
     moveWheelsForward(abs(PWM));
   } else {
     stopWheels();
+  }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------
+// Function to parse Serial input and update PID values
+void parsePIDInput(String input) {
+  float newKp, newKi, newKd;
+  int kpIndex = input.indexOf("Kp=");
+  int kiIndex = input.indexOf("Ki=");
+  int kdIndex = input.indexOf("Kd=");
+
+  if (kpIndex != -1 && kiIndex != -1 && kdIndex != -1) {
+    newKp = input.substring(kpIndex + 3, input.indexOf(" ", kpIndex)).toFloat();
+    newKi = input.substring(kiIndex + 3, input.indexOf(" ", kiIndex)).toFloat();
+    newKd = input.substring(kdIndex + 3).toFloat();
+
+    // Update PID values
+    Kp = newKp;
+    Ki = newKi;
+
+    // Handle cases where there may not be a space after the Kd value
+    if (kdIndex != -1) {
+      newKd = input.substring(kdIndex + 3).toFloat();
+    } else {
+      newKd = 0.0; // Default value if Kd is not provided
+    }
+
+    myPID.SetTunings(Kp, Ki, Kd);
+
+    Serial.print("Updated PID values -> ");
+    Serial.print("Kp: "); Serial.print(Kp);
+    Serial.print(" Ki: "); Serial.print(Ki);
+    Serial.print(" Kd: "); Serial.println(Kd);
+  } else {
+    Serial.println("Invalid input format! Use: Kp=10 Ki=500 Kd=0.05");
   }
 }
