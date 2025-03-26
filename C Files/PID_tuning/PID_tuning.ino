@@ -13,7 +13,9 @@ BLEService customService("00000000-5EC4-4083-81CD-A10B8D5CF6EC");
 BLECharacteristic customCharacteristic(
     "00000001-5EC4-4083-81CD-A10B8D5CF6EC", BLERead | BLEWrite | BLENotify, BUFFER_SIZE, false);
 
-// -- BLUETOOTH -- //
+bool isCentralConnected = False;
+
+// -- BLUETOOTH END -- //
 
 // ---------------  Pin Assignments  ---------------
 const int pwmA1 = 9;   // PWM output for Motor A
@@ -128,10 +130,13 @@ void loop() {
   BLEDevice central = BLE.central();
 
   if (central) {
-    Serial.print("Connected to central: ");
-    Serial.println(central.address());
-    digitalWrite(LED_BUILTIN, HIGH); // Turn on LED to indicate connection
-
+    if (isCentralConnected == False) {
+      isCentralConnected == True;
+      Serial.print("Connected to central: ");
+      Serial.println(central.address());
+      digitalWrite(LED_BUILTIN, HIGH); // Turn on LED to indicate connection
+    }
+    
     // Run this in the loop if connected to bluetooth device
     if (central.connected()) {
       // Check if the characteristic was written
@@ -151,18 +156,18 @@ void loop() {
         Serial.print("Received data: ");
         Serial.println(receivedString);
 
-
         // Optionally, respond by updating the characteristic's value
         customCharacteristic.writeValue("Data received");
       }
     }
-
-    digitalWrite(LED_BUILTIN, LOW); // Turn off LED when disconnected
-    Serial.println("Disconnected from central.");
+    else {
+      isCentralConnected == False;
+      digitalWrite(LED_BUILTIN, LOW); // Turn off LED when disconnected
+      Serial.println("Disconnected from central.");
+    }
   }
   
   // -- BLUETOOTH END -- //
-
 
    // Check if new PID values are available from Serial
   if (Serial.available()) {
@@ -259,3 +264,34 @@ void parsePIDInput(String input) {
     Serial.println("Invalid input format! Use: Kp=10 Ki=500 Kd=0.05");
   }
 }
+
+//void setupBluetooth() {
+//  Serial.begin(9600);
+//  while (!Serial);
+//
+//  // Initialize the built-in LED to indicate connection status
+//  pinMode(LED_BUILTIN, OUTPUT);
+//
+//  if (!BLE.begin()) {
+//    Serial.println("Starting BLE failed!");
+//    while (1);
+//  }
+//
+//  // Set the device name and local name
+//  BLE.setLocalName("BLE-BERT-AND-ERNIE");
+//  BLE.setDeviceName("BLE-BERT-AND-ERNIE");
+//
+//  // Add the characteristic to the service
+//  customService.addCharacteristic(customCharacteristic);
+//
+//  // Add the service
+//  BLE.addService(customService);
+//
+//  // Set an initial value for the characteristic
+//  customCharacteristic.writeValue("Waiting for data");
+//
+//  // Start advertising the service
+//  BLE.advertise();
+//
+//  Serial.println("Bluetooth® device active, waiting for connections...");
+//}
