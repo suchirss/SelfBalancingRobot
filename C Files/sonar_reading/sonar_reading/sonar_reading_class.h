@@ -8,14 +8,14 @@ class SonarReading {
   private:
     int trigPin, echoPin;
     long duration, inches, cm;
-    String sonarID;
+//    String sonarID;
   
     long microsecondsToInches(long microseconds);
     long microsecondsToCentimeters(long microseconds);
-    void assignID();
+//    void assignID();
   
   public:
-    float distance;
+    int distance;
 
     // constructor declaration
     SonarReading(int trigPin, int echoPin);
@@ -24,7 +24,7 @@ class SonarReading {
   
     void displayDistance();
 
-    String getID();
+//    String getID();
 };
 
 #endif
