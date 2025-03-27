@@ -202,6 +202,21 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Container(
+                  height: 400, // Set height of the rectangle
+                  width: 400,
+                  alignment:
+                      Alignment.center, // This ensures the child doesn't expand
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: 4),
+                  ),
+                  child: Container(
+                      width: 100,
+                      height: 100,
+                      child: Image.asset(
+                        'assets/images/self-balancing-robot.png',
+                      )),
+                ),
                 // Joystick Buttons
                 Spacer(), // pushes everything below
                 Row(
