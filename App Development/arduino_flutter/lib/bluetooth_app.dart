@@ -210,12 +210,35 @@ class _MyHomePageState extends State<MyHomePage> {
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black, width: 4),
                   ),
-                  child: Container(
-                      width: 100,
-                      height: 100,
-                      child: Image.asset(
-                        'assets/images/self-balancing-robot.png',
-                      )),
+                  child: Stack(
+                    alignment: Alignment
+                        .center, // This ensures that the children are centered
+                    children: [
+                      // The image is the first child in the stack
+                      Container(
+                        width: 150,
+                        height: 150,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black, width: 1)),
+                        child: Image.asset(
+                          'assets/images/self-balancing-robot.png',
+                        ),
+                      ),
+                      // The rectangle positioned relative to the image
+                      Positioned(
+                        top: 0, // Position the rectangle from the top
+                        left: 0, // Position the rectangle from the left
+                        child: Container(
+                          width: 10,
+                          height: 10,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.red, width: 2),
+                            color: Colors.red, // No fill color
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 // Joystick Buttons
                 Spacer(), // pushes everything below
