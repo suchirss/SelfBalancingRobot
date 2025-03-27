@@ -203,6 +203,7 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Joystick Buttons
+                Spacer(), // pushes everything below
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -219,19 +220,19 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     ElevatedButton(
                       onPressed:
-                          _isConnected ? () => _sendCommand('FORWARD') : null,
+                          _isConnected ? () => _sendCommand('LEFT') : null,
                       child: const Icon(Icons.arrow_back),
                     ),
                     const SizedBox(width: 10),
                     ElevatedButton(
                       onPressed:
-                          _isConnected ? () => _sendCommand('FORWARD') : null,
+                          _isConnected ? () => _sendCommand('BACKWARD') : null,
                       child: const Icon(Icons.arrow_downward),
                     ),
                     const SizedBox(width: 10),
                     ElevatedButton(
                       onPressed:
-                          _isConnected ? () => _sendCommand('FORWARD') : null,
+                          _isConnected ? () => _sendCommand('RIGHT') : null,
                       child: const Icon(Icons.arrow_forward),
                     ),
                   ],
@@ -242,18 +243,21 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ElevatedButton(
-                      onPressed: _isConnected ? () => _sendCommand('A') : null,
-                      child: const Text('Send A'),
+                      onPressed:
+                          _isConnected ? () => _sendCommand('Standard') : null,
+                      child: const Text('Standard'),
                     ),
                     const SizedBox(width: 10),
                     ElevatedButton(
-                      onPressed: _isConnected ? () => _sendCommand('A') : null,
-                      child: const Text('Send A'),
+                      onPressed:
+                          _isConnected ? () => _sendCommand('Invert') : null,
+                      child: const Text('Invert'),
                     ),
                     const SizedBox(width: 10),
                     ElevatedButton(
-                      onPressed: _isConnected ? () => _sendCommand('A') : null,
-                      child: const Text('Send A'),
+                      onPressed:
+                          _isConnected ? () => _sendCommand('Delay') : null,
+                      child: const Text('Delay'),
                     ),
                   ],
                 ),
