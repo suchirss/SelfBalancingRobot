@@ -61,7 +61,7 @@ void loop() {
         char receivedString[length + 1]; // +1 for null terminator
         memcpy(receivedString, receivedData, length);
         receivedString[length] = '\0'; // Null-terminate the string
-
+  
         // Print the received data to the Serial Monitor
         Serial.print("Received data: ");
         Serial.println(receivedString);

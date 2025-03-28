@@ -166,7 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           if (_devices.isNotEmpty)
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(0.0),
               child: DropdownButton<String>(
                 isExpanded: true,
                 hint: const Text("Select a BLE Device"),
@@ -203,13 +203,13 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(50.0),
+                  padding: const EdgeInsets.all(0.0),
                   child: Stack(
                     alignment: Alignment
                         .center, // This ensures that the children are centered
                     children: [
                       Container(
-                          height: 400,
+                          height: 450,
                           width: 300,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
@@ -226,7 +226,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       // The rectangle positioned relative to the image
                       Positioned(
-                        top: (400 - 50) /
+                        top: (450 - 50) /
                             2, // Position the rectangle from the top
                         // top: 150,
                         left: (300 - 10 - 100) /
@@ -241,7 +241,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       Positioned(
-                        top: (400 - 50) /
+                        top: (450 - 50) /
                             2, // Position the rectangle from the top
                         // top: 150,
                         left: (300 - 10 + 100) /
@@ -256,7 +256,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       Positioned(
-                        top: (400 - 50 - 10) /
+                        top: (450 - 50 - 10) /
                             2, // Position the rectangle from the top
                         // top: 150,
                         left: (300 - 110) /
@@ -271,7 +271,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       Positioned(
-                        top: (400 + 50) /
+                        top: (450 + 50) /
                             2, // Position the rectangle from the top
                         // top: 150,
                         left: (300 - 110) /
