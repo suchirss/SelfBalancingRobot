@@ -4,7 +4,7 @@
 SonarReading sonarA(A2, A3); // correct
 SonarReading sonarB(A6, A7); // correct
 SonarReading sonarC(A0, A1); // correct
-SonarReading sonarD(D8, D7); // correct
+SonarReading sonarD(8, 7); 
 SonarReading sonarE(A4, A5); // correct
 SonarReading sonarF(D11, D12); // correct
 
@@ -14,28 +14,28 @@ void setup() {
 }
 
 void loop() {
-  sonarA.readDistance();
+  sonarA.readnEncodeDistance();
   sonarA.displayDistance();
-  Serial.println(sonarA.encodeString());
+  Serial.println(sonarA.getEncodedString());
 
-  sonarB.readDistance();
+  sonarB.readnEncodeDistance();
   sonarB.displayDistance();
-  Serial.println(sonarB.encodeString());
+  Serial.println(sonarB.getEncodedString());
 
-  sonarC.readDistance();
+  sonarC.readnEncodeDistance();
   sonarC.displayDistance();
-  Serial.println(sonarC.encodeString());  
-
-  sonarD.readDistance();
+  Serial.println(sonarC.getEncodedString());  
+  
+  sonarD.readnEncodeDistance();
   sonarD.displayDistance();
-  Serial.println(sonarD.encodeString());
+  Serial.println(sonarD.getEncodedString());
 
-  sonarE.readDistance();
+  sonarE.readnEncodeDistance();
   sonarE.displayDistance();
-  Serial.println(sonarE.encodeString());
+  Serial.println(sonarE.getEncodedString());
 
-  sonarF.readDistance();
+  sonarF.readnEncodeDistance();
   sonarF.displayDistance();
-  Serial.println(sonarF.encodeString());
+  Serial.println(sonarF.getEncodedString());
 
 }

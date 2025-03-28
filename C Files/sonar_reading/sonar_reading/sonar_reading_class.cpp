@@ -29,7 +29,7 @@ char SonarReading::getID() {
   return ID;
 }
 
-void SonarReading::readDistance() {
+void SonarReading::readnEncodeDistance() {
 
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
@@ -44,6 +44,8 @@ void SonarReading::readDistance() {
 //    inches = microsecondsToInches(duration);
     cm = microsecondsToCentimeters(duration);
   }
+
+  stringEncoder();
 }
 
 void SonarReading::displayDistance() {
@@ -54,8 +56,12 @@ void SonarReading::displayDistance() {
   Serial.println(" cm");
 }
 
-String SonarReading::encodeString() {
-  return String(ID) + String(cm);
+void SonarReading::stringEncoder() {
+  encodedString = String(ID) + String(cm);
+}
+
+String SonarReading::getEncodedString() {
+  return encodedString;
 }
 
 //long SonarReading::microsecondsToInches(long microseconds) {

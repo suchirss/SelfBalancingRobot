@@ -2,26 +2,27 @@
 #define SONAR_READING_H
 
 #include <Arduino.h>
-#include <map>
 
 class SonarReading {
   private:
     int trigPin, echoPin;
     long duration, inches, cm;
     char ID;
+    String encodedString;
   
     long microsecondsToInches(long microseconds);
     long microsecondsToCentimeters(long microseconds);
     void assignID();
+    void stringEncoder();
   
   public:
     // constructor declaration
     SonarReading(int trigPin, int echoPin);
   
-    void readDistance();
+    void readnEncodeDistance();
     void displayDistance();
     char getID();
-    String encodeString();
+    String getEncodedString();
 
 };
 
