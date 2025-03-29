@@ -57,63 +57,67 @@ void setup() {
 }
 
 void loop() {
+
+  checkMemory();  // Check available memory in each loop iteration
+
   
-//  // -- BLUETOOTH -- //
-//
-//  // Wait for a BLE central to connect
-//  BLEDevice central = BLE.central();
-//
-//  while(!centralFlag) {
-//    central = BLE.central();
-////    Serial.println(central);
-//    if(central) {
-//      centralFlag = true;
-//    }
-//    else
-//    {
-//      Serial.println(central);
-//    }
-//  }
-//
-//  if (central) {
-//    if (isCentralConnected == false) {
-//      isCentralConnected = true;
-//      Serial.print("Connected to central: ");
-//      Serial.println(central.address());
-//      digitalWrite(LED_BUILTIN, HIGH); // Turn on LED to indicate connection
-//    }
-//    
-//    // Run this in the loop if connected to bluetooth device
-//    if (central.connected()) {
-//      // Check if the characteristic was written
-//      if (customCharacteristic.written()) {
-//       // Get the length of the received data
-//        int length = customCharacteristic.valueLength();
-//
-//        // Read the received data
-//        const unsigned char* receivedData = customCharacteristic.value();
-//
-//        // Create a properly terminated string
-//        char receivedString[length + 1]; // +1 for null terminator
-//        memcpy(receivedString, receivedData, length);
-//        receivedString[length] = '\0'; // Null-terminate the string
-//
-//        // Print the received data to the Serial Monitor
-//        Serial.print("Received data: ");
-//        Serial.println(receivedString);
-//
-//        // Optionally, respond by updating the characteristic's value
-//        customCharacteristic.writeValue("Data received");
-//      }
-//    }
-//  }
-//    else {
-//      isCentralConnected = false;
-//      digitalWrite(LED_BUILTIN, LOW); // Turn off LED when disconnected
-//      Serial.println("Disconnected from central.");
-//    }
-//  
-//  // -- BLUETOOTH END -- //
+  // -- BLUETOOTH -- //
+
+  // Wait for a BLE central to connect
+  BLEDevice central = BLE.central();
+
+  while(!centralFlag) {
+    central = BLE.central();
+//    Serial.println(central);
+    if(central) {
+      centralFlag = true;
+    }
+    else
+    {
+      Serial.println(central);
+    }
+  }
+
+  if (central) {
+    if (isCentralConnected == false) {
+      isCentralConnected = true;
+      Serial.print("Connected to central: ");
+      Serial.println(central.address());
+      digitalWrite(LED_BUILTIN, HIGH); // Turn on LED to indicate connection
+    }
+    
+    // Run this in the loop if connected to bluetooth device
+    if (central.connected()) {
+      // Check if the characteristic was written
+      if (customCharacteristic.written()) {
+       // Get the length of the received data
+        int length = customCharacteristic.valueLength();
+
+        // Read the received data
+        const unsigned char* receivedData = customCharacteristic.value();
+
+        // Create a properly terminated string
+        char receivedString[length + 1]; // +1 for null terminator
+        memcpy(receivedString, receivedData, length);
+        receivedString[length] = '\0'; // Null-terminate the string
+
+        // Print the received data to the Serial Monitor
+        Serial.print("Received data: ");
+        Serial.println(receivedString);
+
+        // Optionally, respond by updating the characteristic's value
+        customCharacteristic.writeValue("Data received");
+        delay(10); // allows time for bluetooth command to be received
+      }
+    }
+  }
+    else {
+      isCentralConnected = false;
+      digitalWrite(LED_BUILTIN, LOW); // Turn off LED when disconnected
+      Serial.println("Disconnected from central.");
+    }
+  
+  // -- BLUETOOTH END -- //
 
   readnEncodeSixSonars(counter);
 
@@ -155,6 +159,7 @@ void readnEncodeSixSonars(int sonarIndex) {
     Serial.println(sonarE.getEncodedString());
   }
 
+
   if (sonarIndex % 6 == 5) {
     sonarF.readnEncodeDistance2();
     sonarF.displayDistance();
@@ -188,4 +193,13 @@ void setupBluetooth() {
   BLE.advertise();
 
   Serial.println("Bluetooth® device active, waiting for connections...");
+}
+
+extern "C" char *sbrk(int);
+void checkMemory() {
+  char stack_dummy = 0;
+  Serial.print("Heap: ");
+  Serial.print((int)sbrk(0));
+  Serial.print(" | Stack: ");
+  Serial.println((int)&stack_dummy);
 }

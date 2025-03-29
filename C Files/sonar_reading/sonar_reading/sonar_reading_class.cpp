@@ -64,7 +64,6 @@ int SonarReading::readnEncodeDistance2() {
     if (micros() - startTime > timeout) {
       return -1;
     }
-    startTime = micros(); // Keep updating the start time until echo is HIGH
   }
 
   unsigned long endTime = micros();  // Record the end time
