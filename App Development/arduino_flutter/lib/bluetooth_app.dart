@@ -166,7 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           if (_devices.isNotEmpty)
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(0.0),
               child: DropdownButton<String>(
                 isExpanded: true,
                 hint: const Text("Select a BLE Device"),
@@ -202,6 +202,92 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Padding(
+                  padding: const EdgeInsets.all(0.0),
+                  child: Stack(
+                    alignment: Alignment
+                        .center, // This ensures that the children are centered
+                    children: [
+                      Container(
+                          height: 450,
+                          width: 300,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: Colors.black, width: 4))),
+                      Container(
+                        width: 100,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black, width: 1)),
+                        child: Image.asset(
+                          'assets/images/self-balancing-robot.png',
+                        ),
+                      ),
+                      // The rectangle positioned relative to the image
+                      Positioned(
+                        top: (450 - 50) /
+                            2, // Position the rectangle from the top
+                        // top: 150,
+                        left: (300 - 10 - 100) /
+                            2, // Position the rectangle from the left
+                        child: Container(
+                          width: 10,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black, width: 2),
+                            color: Colors.deepPurple, // No fill color
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: (450 - 50) /
+                            2, // Position the rectangle from the top
+                        // top: 150,
+                        left: (300 - 10 + 100) /
+                            2, // Position the rectangle from the left
+                        child: Container(
+                          width: 10,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black, width: 2),
+                            color: Colors.deepPurple, // No fill color
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: (450 - 50 - 10) /
+                            2, // Position the rectangle from the top
+                        // top: 150,
+                        left: (300 - 110) /
+                            2, // Position the rectangle from the left
+                        child: Container(
+                          width: 110,
+                          height: 10,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black, width: 2),
+                            color: Colors.deepPurple, // No fill color
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: (450 + 50) /
+                            2, // Position the rectangle from the top
+                        // top: 150,
+                        left: (300 - 110) /
+                            2, // Position the rectangle from the left
+                        child: Container(
+                          width: 110,
+                          height: 10,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black, width: 2),
+                            color: Colors.deepPurple, // No fill color
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 // Joystick Buttons
                 Spacer(), // pushes everything below
                 Row(
