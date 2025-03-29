@@ -128,22 +128,28 @@ void loop() {
 
 void readnEncodeSixSonars(int sonarIndex) {
 
+  String stringToSend;
+  Serial.println("stringToSend: " + stringToSend); // see that this resets
+
   if (sonarIndex % 6 == 0) {
     sonarA.readnEncodeDistance2();
     sonarA.displayDistance();
     Serial.println(sonarA.getEncodedString());
+    stringToSend = sonarA.getEncodedString();
   }
 
   if (sonarIndex % 6 == 1) {
     sonarB.readnEncodeDistance2();
     sonarB.displayDistance();
     Serial.println(sonarB.getEncodedString());
+    stringToSend = sonarB.getEncodedString();
   }
 
   if (sonarIndex % 6 == 2) {
     sonarC.readnEncodeDistance2();
     sonarC.displayDistance();
     Serial.println(sonarC.getEncodedString());  
+    stringToSend = sonarC.getEncodedString();
   }
 
   if (sonarIndex % 6 == 3) {
@@ -157,6 +163,7 @@ void readnEncodeSixSonars(int sonarIndex) {
     sonarE.readnEncodeDistance2();
     sonarE.displayDistance();
     Serial.println(sonarE.getEncodedString());
+    stringToSend = sonarE.getEncodedString();
   }
 
 
@@ -164,7 +171,12 @@ void readnEncodeSixSonars(int sonarIndex) {
     sonarF.readnEncodeDistance2();
     sonarF.displayDistance();
     Serial.println(sonarF.getEncodedString());
+    stringToSend = sonarF.getEncodedString();
   }
+
+  customCharacteristic.writeValue(stringToSend.c_str());
+  Serial.println("Sent to BLE: " + stringToSend);
+
 }
 
 void setupBluetooth() {

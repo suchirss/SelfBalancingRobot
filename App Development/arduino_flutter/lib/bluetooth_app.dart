@@ -121,6 +121,9 @@ class _MyHomePageState extends State<MyHomePage> {
     _writeCharacteristic = characteristic;
 
     _notifySub = _ble.subscribeToCharacteristic(characteristic).listen((bytes) {
+      String stringReceived = Utf8Decoder().convert(bytes);
+      print(stringReceived);
+
       setState(() {
         _stateMessage = 'Data received: ${Utf8Decoder().convert(bytes)}';
       });
