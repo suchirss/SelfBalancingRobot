@@ -9,7 +9,7 @@ BLECharacteristic customCharacteristic(
 
 void setup() {
   Serial.begin(9600);
-  while (!Serial);
+  while (!Serial); // waits for the Serial monitor to open before proceeding with the rest of the code
 
   // Initialize the built-in LED to indicate connection status
   pinMode(LED_BUILTIN, OUTPUT);
@@ -61,7 +61,7 @@ void loop() {
         char receivedString[length + 1]; // +1 for null terminator
         memcpy(receivedString, receivedData, length);
         receivedString[length] = '\0'; // Null-terminate the string
-
+  
         // Print the received data to the Serial Monitor
         Serial.print("Received data: ");
         Serial.println(receivedString);

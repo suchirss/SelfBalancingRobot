@@ -20,6 +20,7 @@ class SonarReading {
     SonarReading(int trigPin, int echoPin);
   
     void readnEncodeDistance();
+    int readnEncodeDistance2();
     void displayDistance();
     char getID();
     String getEncodedString();
