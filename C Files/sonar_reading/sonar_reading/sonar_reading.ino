@@ -58,7 +58,7 @@ void setup() {
 
 void loop() {
 
-  checkMemory();  // Check available memory in each loop iteration
+//  checkMemory();  // Check available memory in each loop iteration
 
   
   // -- BLUETOOTH -- //
