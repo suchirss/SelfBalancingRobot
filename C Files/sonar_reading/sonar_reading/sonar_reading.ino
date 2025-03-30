@@ -135,7 +135,7 @@ void readnEncodeSixSonars(int sonarIndex) {
     sonarA.readnEncodeDistance2();
     sonarA.displayDistance();
     Serial.println(sonarA.getEncodedString());
-    stringToSend = sonarA.getEncodedString();
+    stringToSend = "#" + sonarA.getEncodedString(); // hashtag for decoding purposes
   }
 
   if (sonarIndex % 6 == 1) {
@@ -175,7 +175,7 @@ void readnEncodeSixSonars(int sonarIndex) {
   }
 
   customCharacteristic.writeValue(stringToSend.c_str());
-  Serial.println("Sent to BLE: " + stringToSend);
+  Serial.println("Sent to BLE: " + stringToSend); 
 
 }
 

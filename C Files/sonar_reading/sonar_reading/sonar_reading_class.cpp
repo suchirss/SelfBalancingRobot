@@ -62,6 +62,7 @@ int SonarReading::readnEncodeDistance2() {
   unsigned long startTime = micros();  // Record the start time
   while (digitalRead(echoPin) == LOW) {
     if (micros() - startTime > timeout) {
+      cm = -1; // resets cm
       return -1;
     }
   }
@@ -69,6 +70,7 @@ int SonarReading::readnEncodeDistance2() {
   unsigned long endTime = micros();  // Record the end time
   while (digitalRead(echoPin) == HIGH) {
     if (micros() - startTime > timeout) {
+      cm = -1; // resets cm
       return -1;
     }
     endTime = micros(); // Keep updating the end time until echo goes LOW
@@ -95,7 +97,11 @@ void SonarReading::displayDistance() {
 }
 
 void SonarReading::stringEncoder() {
-  encodedString = String(ID) + String(cm);
+  if(cm != -1) {
+    encodedString = String(ID) + String(cm);
+  } else {
+    encodedString = "";
+  }
 }
 
 String SonarReading::getEncodedString() {
