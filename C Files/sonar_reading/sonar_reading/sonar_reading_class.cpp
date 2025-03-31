@@ -63,6 +63,7 @@ int SonarReading::readnEncodeDistance2() {
   while (digitalRead(echoPin) == LOW) {
     if (micros() - startTime > timeout) {
       cm = -1; // resets cm
+      stringEncoder();
       return -1;
     }
   }
@@ -71,6 +72,7 @@ int SonarReading::readnEncodeDistance2() {
   while (digitalRead(echoPin) == HIGH) {
     if (micros() - startTime > timeout) {
       cm = -1; // resets cm
+      stringEncoder();
       return -1;
     }
     endTime = micros(); // Keep updating the end time until echo goes LOW
@@ -97,10 +99,11 @@ void SonarReading::displayDistance() {
 }
 
 void SonarReading::stringEncoder() {
+  Serial.print("cm: "); Serial.println(cm);
   if(cm != -1) {
-    encodedString = String(ID) + String(cm);
+    encodedString = "#" + String(ID) + String(cm);
   } else {
-    encodedString = "";
+      encodedString = "";  // Clear the string when cm is -1
   }
 }
 

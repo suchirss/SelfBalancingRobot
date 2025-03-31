@@ -7,6 +7,14 @@ import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 const String serviceUUID = "00000000-5EC4-4083-81CD-A10B8D5CF6EC";
 const String characteristicUUID = "00000001-5EC4-4083-81CD-A10B8D5CF6EC";
 
+// define object sizes
+const double miniMapWidth = 300;
+const double miniMapHeight = 450;
+const double robotRectWidth = 100;
+const double robotRectHeight = 50;
+const double rect50 = 50;
+const double rect10 = 10;
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
@@ -122,11 +130,27 @@ class _MyHomePageState extends State<MyHomePage> {
 
     _notifySub = _ble.subscribeToCharacteristic(characteristic).listen((bytes) {
       String stringReceived = Utf8Decoder().convert(bytes);
-      print(stringReceived);
 
-      setState(() {
-        _stateMessage = 'Data received: ${Utf8Decoder().convert(bytes)}';
-      });
+      if (stringReceived.isNotEmpty) {
+        print(stringReceived);
+        String firstChar = stringReceived.substring(0, 1);
+        print(firstChar);
+        if (firstChar == "#") {
+          print("$stringReceived type #");
+        } else if (firstChar == "@") {
+          print("$stringReceived type @");
+          setState(() {
+            _stateMessage = 'Data received: ${Utf8Decoder().convert(bytes)}';
+          });
+        }
+      } else {
+        print("empty string!");
+      }
+
+      // if (firstChar == "#") {
+      //   print("This is a ultrasonic sensor string");
+      //   // decode the string here
+      // }
     });
   }
 
@@ -212,15 +236,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         .center, // This ensures that the children are centered
                     children: [
                       Container(
-                          height: 450,
-                          width: 300,
+                          height: miniMapHeight,
+                          width: miniMapWidth,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                               border:
                                   Border.all(color: Colors.black, width: 4))),
                       Container(
-                        width: 100,
-                        height: 50,
+                        width: robotRectWidth,
+                        height: robotRectHeight,
                         decoration: BoxDecoration(
                             border: Border.all(color: Colors.black, width: 1)),
                         child: Image.asset(
@@ -229,14 +253,15 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       // The rectangle positioned relative to the image
                       Positioned(
-                        top: (450 - 50) /
-                            2, // Position the rectangle from the top
+                        // left rectangle
+                        top: (miniMapHeight - rect50) /
+                            2, // Position the rectangle from the top - THIS WILL STAY CONSTANT FOR LEFT RECTANGLE
                         // top: 150,
-                        left: (300 - 10 - 100) /
-                            2, // Position the rectangle from the left
+                        left: (miniMapWidth - rect10 - robotRectWidth) /
+                            2, // Position the rectangle from the left - WRITE FUNCTION TO VARY
                         child: Container(
-                          width: 10,
-                          height: 50,
+                          width: rect10,
+                          height: rect50,
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.black, width: 2),
                             color: Colors.deepPurple, // No fill color
@@ -244,14 +269,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       Positioned(
-                        top: (450 - 50) /
-                            2, // Position the rectangle from the top
+                        // right rectangle
+                        top: (miniMapHeight - robotRectHeight) /
+                            2, // Position the rectangle from the top - THIS WILL STAY CONSTANT FOR RIGHT RECTANGLE
                         // top: 150,
-                        left: (300 - 10 + 100) /
-                            2, // Position the rectangle from the left
+                        left: (miniMapWidth - rect10 + robotRectWidth) /
+                            2, // Position the rectangle from the left - WRITE FUNCTION TO VARY
                         child: Container(
-                          width: 10,
-                          height: 50,
+                          width: rect10,
+                          height: rect50,
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.black, width: 2),
                             color: Colors.deepPurple, // No fill color
@@ -259,13 +285,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       Positioned(
-                        top: (450 - 50 - 10) /
-                            2, // Position the rectangle from the top
-                        // top: 150,
-                        left: (300 - 110) /
-                            2, // Position the rectangle from the left
+                        // top rectangle
+                        top: (miniMapHeight - robotRectHeight - rect10) /
+                            2, // Position the rectangle from the top - VARY
+                        left: (miniMapWidth - robotRectWidth - rect10) /
+                            2, // Position the rectangle from the left - CONSTANT
                         child: Container(
-                          width: 110,
+                          width: robotRectWidth + rect10,
                           height: 10,
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.black, width: 2),
@@ -274,11 +300,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       Positioned(
-                        top: (450 + 50) /
-                            2, // Position the rectangle from the top
-                        // top: 150,
-                        left: (300 - 110) /
-                            2, // Position the rectangle from the left
+                        top: (miniMapHeight + rect50) /
+                            2, // Position the rectangle from the top - VARY
+                        left: (miniMapWidth - robotRectWidth - rect10) /
+                            2, // Position the rectangle from the left - CONSTANT
                         child: Container(
                           width: 110,
                           height: 10,
