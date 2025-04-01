@@ -98,13 +98,18 @@ void SonarReading::displayDistance() {
   Serial.println(" cm");
 }
 
+//void SonarReading::stringEncoder() {
+//  Serial.print("cm: "); Serial.println(cm);
+//  if(cm != -1) {
+//    encodedString = "#" + String(ID) + String(cm);
+//  } else {
+//      encodedString = "";  // Clear the string when cm is -1
+//  }
+//}
+
 void SonarReading::stringEncoder() {
   Serial.print("cm: "); Serial.println(cm);
-  if(cm != -1) {
-    encodedString = "#" + String(ID) + String(cm);
-  } else {
-      encodedString = "";  // Clear the string when cm is -1
-  }
+  encodedString = "#" + String(ID) + String(cm);
 }
 
 String SonarReading::getEncodedString() {

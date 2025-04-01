@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
+import 'sonar.dart'; // import sonar class in same folder
+import 'dart:math';
 
 // define UUIDs as constants - these should match the Arduino code
 const String serviceUUID = "00000000-5EC4-4083-81CD-A10B8D5CF6EC";
@@ -14,6 +16,24 @@ const double robotRectWidth = 100;
 const double robotRectHeight = 50;
 const double rect50 = 50;
 const double rect10 = 10;
+
+// initialize sonar instances of type Sonar class
+Sonar sonarA = Sonar(-1, "A");
+Sonar sonarB = Sonar(-1, "B");
+Sonar sonarC = Sonar(-1, "C");
+Sonar sonarD = Sonar(-1, "D");
+Sonar sonarE = Sonar(-1, "E");
+Sonar sonarF = Sonar(-1, "F");
+
+// map secondChar String to sonar instance
+Map<String, Sonar> sonarMap = {
+  "A": sonarA,
+  "B": sonarB,
+  "C": sonarC,
+  "D": sonarD,
+  "E": sonarE,
+  "F": sonarF,
+};
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -134,11 +154,16 @@ class _MyHomePageState extends State<MyHomePage> {
       if (stringReceived.isNotEmpty) {
         print(stringReceived);
         String firstChar = stringReceived.substring(0, 1);
-        print(firstChar);
+        // print(firstChar);
         if (firstChar == "#") {
-          print("$stringReceived type #");
+          // print("$stringReceived type #");
+          String secondChar = stringReceived.substring(1, 2);
+          sonarMap[secondChar]?.decodeString(stringReceived);
+          setState(() {});
+          print("checking sonar decoding: ");
+          sonarMap[secondChar]?.displayString();
         } else if (firstChar == "@") {
-          print("$stringReceived type @");
+          // print("$stringReceived type @");
           setState(() {
             _stateMessage = 'Data received: ${Utf8Decoder().convert(bytes)}';
           });
@@ -253,11 +278,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       // The rectangle positioned relative to the image
                       Positioned(
-                        // left rectangle
+                        // -------------- LEFT RECTANGLE --------------
                         top: (miniMapHeight - rect50) /
                             2, // Position the rectangle from the top - THIS WILL STAY CONSTANT FOR LEFT RECTANGLE
                         // top: 150,
-                        left: (miniMapWidth - rect10 - robotRectWidth) /
+                        left: (miniMapWidth -
+                                rect10 -
+                                robotRectWidth -
+                                2 * sonarA.get_px()) /
                             2, // Position the rectangle from the left - WRITE FUNCTION TO VARY
                         child: Container(
                           width: rect10,
@@ -269,11 +297,14 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       Positioned(
-                        // right rectangle
+                        // -------------- RIGHT RECTANGLE --------------
                         top: (miniMapHeight - robotRectHeight) /
                             2, // Position the rectangle from the top - THIS WILL STAY CONSTANT FOR RIGHT RECTANGLE
                         // top: 150,
-                        left: (miniMapWidth - rect10 + robotRectWidth) /
+                        left: (miniMapWidth -
+                                rect10 +
+                                robotRectWidth +
+                                2 * sonarD.get_px()) /
                             2, // Position the rectangle from the left - WRITE FUNCTION TO VARY
                         child: Container(
                           width: rect10,
@@ -285,8 +316,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       Positioned(
-                        // top rectangle
-                        top: (miniMapHeight - robotRectHeight - rect10) /
+                        // -------------- TOP RECTANGLE --------------
+                        top: (miniMapHeight -
+                                robotRectHeight -
+                                rect10 -
+                                2 * min(sonarB.get_px(), sonarF.get_px())) /
                             2, // Position the rectangle from the top - VARY
                         left: (miniMapWidth - robotRectWidth - rect10) /
                             2, // Position the rectangle from the left - CONSTANT
@@ -300,7 +334,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       Positioned(
-                        top: (miniMapHeight + rect50) /
+                        // -------------- BOTTOM RECTANGLE --------------
+                        top: (miniMapHeight +
+                                rect50 +
+                                min(sonarC.get_px(), sonarE.get_px())) /
                             2, // Position the rectangle from the top - VARY
                         left: (miniMapWidth - robotRectWidth - rect10) /
                             2, // Position the rectangle from the left - CONSTANT

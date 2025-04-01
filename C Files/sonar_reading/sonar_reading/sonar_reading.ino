@@ -135,7 +135,7 @@ void readnEncodeSixSonars(int sonarIndex) {
     sonarA.readnEncodeDistance2();
     sonarA.displayDistance();
     Serial.println(sonarA.getEncodedString());
-    stringToSend = "@" + sonarA.getEncodedString();
+    stringToSend = sonarA.getEncodedString();
   }
 
   if (sonarIndex % 6 == 1) {
