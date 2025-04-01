@@ -14,7 +14,7 @@ int counter = -1;
 SonarReading sonarA(A2, A3); // correct
 SonarReading sonarB(A6, A7); // correct
 SonarReading sonarC(A0, A1); // correct
-SonarReading sonarD(8, 7); // DOES NOT READ
+SonarReading sonarD(8, 7); // correct
 SonarReading sonarE(A4, A5); // correct
 SonarReading sonarF(D11, D12); // correct
 
@@ -153,10 +153,10 @@ void readnEncodeSixSonars(int sonarIndex) {
   }
 
   if (sonarIndex % 6 == 3) {
-//    sonarD.readnEncodeDistance2();
-//    sonarD.displayDistance();
-//    Serial.println(sonarD.getEncodedString());
-      Serial.println("Sonar D");
+    sonarD.readnEncodeDistance2();
+    sonarD.displayDistance();
+    Serial.println(sonarD.getEncodedString());
+    stringToSend = sonarD.getEncodedString();
   }
 
   if (sonarIndex % 6 == 4) {

@@ -33,7 +33,6 @@ class Sonar {
       } else {
         _px = 2.0 * inputCM;
       }
-      _px = 200; // set max limit for pixel height
     } else if (_ID == "A" || _ID == "D") {
       if (inputCM > 50) {
         _px = 100;
