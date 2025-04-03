@@ -59,15 +59,15 @@ void setup() {
 unsigned long loopDuration;
 unsigned long lastLoopTime;
 
-// loop time with only bluetooth and sonar: 
+// loop time with only bluetooth and sonar: ranged from 4000 - 42000 us (?!)
 void loop() {
 
-  unsigned long currentTime = micros();  // Get current time in microseconds
-  loopDuration = currentTime - lastLoopTime;  // Calculate loop execution time
-  lastLoopTime = currentTime;  // Update last recorded time
-  Serial.print("LOOP TIME: "); Serial.println(loopDuration);
+//  unsigned long currentTime = micros();  // Get current time in microseconds
+//  loopDuration = currentTime - lastLoopTime;  // Calculate loop execution time
+//  lastLoopTime = currentTime;  // Update last recorded time
+//  Serial.print("LOOP TIME: "); Serial.println(loopDuration);
   
-  //  checkMemory();  // Check available memory in each loop iteratio
+//  checkMemory();  // Check available memory in each loop iteratio
 
   // -- BLUETOOTH -- //
 

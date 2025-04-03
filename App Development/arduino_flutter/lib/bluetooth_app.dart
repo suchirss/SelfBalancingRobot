@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:async';
+import 'package:arduino_flutter/bluetooth_tuning.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'sonar.dart'; // import sonar class in same folder
@@ -400,9 +401,21 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     const SizedBox(width: 10),
                     ElevatedButton(
-                      onPressed:
-                          _isConnected ? () => _sendCommand('Invert') : null,
-                      child: const Text('Invert'),
+                      onPressed: _isConnected
+                          ? () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PIDTuningPage(
+                                    sendCommand: (command) {
+                                      _sendCommand(command);
+                                    },
+                                  ),
+                                ),
+                              );
+                            }
+                          : null, // Disable button if not connected
+                      child: const Text('PID Tuning'),
                     ),
                     const SizedBox(width: 10),
                     ElevatedButton(
