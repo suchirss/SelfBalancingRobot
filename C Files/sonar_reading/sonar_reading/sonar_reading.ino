@@ -56,11 +56,19 @@ void setup() {
   Serial.println("Bluetooth® device active, waiting for connections...");
 }
 
+unsigned long loopDuration;
+unsigned long lastLoopTime;
+
+// loop time with only bluetooth and sonar: 
 void loop() {
 
-//  checkMemory();  // Check available memory in each loop iteration
-
+  unsigned long currentTime = micros();  // Get current time in microseconds
+  loopDuration = currentTime - lastLoopTime;  // Calculate loop execution time
+  lastLoopTime = currentTime;  // Update last recorded time
+  Serial.print("LOOP TIME: "); Serial.println(loopDuration);
   
+  //  checkMemory();  // Check available memory in each loop iteratio
+
   // -- BLUETOOTH -- //
 
   // Wait for a BLE central to connect
