@@ -246,9 +246,32 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text('Connect'),
             ),
           if (_isConnected)
-            ElevatedButton(
-              onPressed: _disconnectFromDevice,
-              child: const Text('Disconnect'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: _disconnectFromDevice,
+                  child: const Text('Disconnect'),
+                ),
+                const SizedBox(width: 10), // Space between buttons
+                ElevatedButton(
+                  onPressed: _isConnected
+                      ? () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PIDTuningPage(
+                                sendCommand: (command) {
+                                  _sendCommand(command);
+                                },
+                              ),
+                            ),
+                          );
+                        }
+                      : null, // Disable button if not connected
+                  child: const Text('PID Tuning'),
+                ),
+              ],
             ),
           // **************** command buttons ****************
           Expanded(
@@ -358,70 +381,97 @@ class _MyHomePageState extends State<MyHomePage> {
                 Spacer(), // pushes everything below
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    ElevatedButton(
-                      onPressed:
-                          _isConnected ? () => _sendCommand('FORWARD') : null,
-                      child: const Icon(Icons.arrow_upward),
+                    // D-Pad (existing)
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              onPressed: _isConnected
+                                  ? () => _sendCommand('FORWARD')
+                                  : null,
+                              child: const Icon(Icons.arrow_upward),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              onPressed: _isConnected
+                                  ? () => _sendCommand('LEFT')
+                                  : null,
+                              child: const Icon(Icons.arrow_back),
+                            ),
+                            const SizedBox(width: 10),
+                            ElevatedButton(
+                              onPressed: _isConnected
+                                  ? () => _sendCommand('BACKWARD')
+                                  : null,
+                              child: const Icon(Icons.arrow_downward),
+                            ),
+                            const SizedBox(width: 10),
+                            ElevatedButton(
+                              onPressed: _isConnected
+                                  ? () => _sendCommand('RIGHT')
+                                  : null,
+                              child: const Icon(Icons.arrow_forward),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+
+                    // Spacer between D-pad and Circle
+                    const SizedBox(width: 20),
+
+                    // Circle (customizable)
+                    Container(
+                      width: 80,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.red, // Circle color
+                        border: Border.all(color: Colors.black, width: 2),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'STOP',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed:
-                          _isConnected ? () => _sendCommand('LEFT') : null,
-                      child: const Icon(Icons.arrow_back),
-                    ),
-                    const SizedBox(width: 10),
-                    ElevatedButton(
-                      onPressed:
-                          _isConnected ? () => _sendCommand('BACKWARD') : null,
-                      child: const Icon(Icons.arrow_downward),
-                    ),
-                    const SizedBox(width: 10),
-                    ElevatedButton(
-                      onPressed:
-                          _isConnected ? () => _sendCommand('RIGHT') : null,
-                      child: const Icon(Icons.arrow_forward),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ElevatedButton(
                       onPressed:
-                          _isConnected ? () => _sendCommand('Standard') : null,
+                          _isConnected ? () => _sendCommand('STANDARD') : null,
                       child: const Text('Standard'),
                     ),
                     const SizedBox(width: 10),
                     ElevatedButton(
-                      onPressed: _isConnected
-                          ? () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PIDTuningPage(
-                                    sendCommand: (command) {
-                                      _sendCommand(command);
-                                    },
-                                  ),
-                                ),
-                              );
-                            }
-                          : null, // Disable button if not connected
-                      child: const Text('PID Tuning'),
+                      onPressed:
+                          _isConnected ? () => _sendCommand('DELAYED') : null,
+                      child: const Text('Delayed'),
                     ),
                     const SizedBox(width: 10),
                     ElevatedButton(
                       onPressed:
-                          _isConnected ? () => _sendCommand('STOP') : null,
-                      child: const Text('STOP'),
+                          _isConnected ? () => _sendCommand('INVERTED') : null,
+                      child: const Text('Inverted'),
                     ),
                   ],
                 ),
