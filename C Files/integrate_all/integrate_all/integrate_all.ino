@@ -3,6 +3,7 @@
 #include "calculate_tilt_angle_functions.h"
 #include <PID_v1.h>
 #include <ArduinoBLE.h>
+#include "sonar_reading_class.h"
 
 #define BUFFER_SIZE 20
 
@@ -29,14 +30,26 @@ float Kd = 0.05; //0.01;  //0.01
 
 // ---------------  Variable Declarations  ---------------
 float k = 0.95;
-
 float acc_tilt_angle, gyro_tilt_angle, last_gyro_tilt_angle, comp_angle, SampleRate, gyroX, gyroY, gyroZ;
+
+// ---------------  Sonar Variable Declarations  ---------------
+bool isCentralConnected = false;
+bool centralFlag = false;
+int counter = -1;
 
 // ---------------  PID Library instantiation  ---------------
 double compAnglePID, PWM, Setpoint = 0.0;
 PID myPID(&compAnglePID, &PWM, &Setpoint, Kp, Ki, Kd, DIRECT);
 unsigned long startTime = 0;
 bool flag;
+
+// ---------------  Instantiate Six Sonars  ---------------
+SonarReading sonarA(A2, A3); // correct
+SonarReading sonarB(A6, A7); // correct
+SonarReading sonarC(A0, A1); // correct
+SonarReading sonarD(8, 7); // correct
+SonarReading sonarE(A4, A5); // correct
+SonarReading sonarF(D11, D12); // correct 
 
 void setup() {
   pinMode(pwmA1, OUTPUT);
@@ -73,7 +86,16 @@ void setup() {
   BLE.advertise();
 }
 
+unsigned long loopDuration;
+unsigned long lastLoopTime;
+
 void loop() {
+
+  unsigned long currentTime = micros();  // Get current time in microseconds
+  loopDuration = currentTime - lastLoopTime;  // Calculate loop execution time
+  lastLoopTime = currentTime;  // Update last recorded time
+  Serial.print("LOOP TIME: "); Serial.println(loopDuration);
+  
   bleControl();
 
   // declare class variables
@@ -121,9 +143,68 @@ void loop() {
     Setpoint = 0;
     balance();
   }
+
+  if (comp_angle <= 0.5 && comp_angle >= -0.5) {
+    readnEncodeSixSonars(counter);
+
+    counter++;
+  }
 }
 
 // ---------------  Funtion Declaration  ---------------
+void readnEncodeSixSonars(int sonarIndex) {
+
+  String stringToSend;
+//  Serial.println("stringToSend: " + stringToSend); // see that this resets
+
+  if (sonarIndex % 6 == 0) {
+    sonarA.readnEncodeDistance2();
+    sonarA.displayDistance();
+    Serial.println(sonarA.getEncodedString());
+    stringToSend = sonarA.getEncodedString();
+  }
+
+  if (sonarIndex % 6 == 1) {
+    sonarB.readnEncodeDistance2();
+    sonarB.displayDistance();
+    Serial.println(sonarB.getEncodedString());
+    stringToSend = sonarB.getEncodedString();
+  }
+
+  if (sonarIndex % 6 == 2) {
+    sonarC.readnEncodeDistance2();
+    sonarC.displayDistance();
+    Serial.println(sonarC.getEncodedString());  
+    stringToSend = sonarC.getEncodedString();
+  }
+
+  if (sonarIndex % 6 == 3) {
+    sonarD.readnEncodeDistance2();
+    sonarD.displayDistance();
+    Serial.println(sonarD.getEncodedString());
+    stringToSend = sonarD.getEncodedString();
+  }
+
+  if (sonarIndex % 6 == 4) {
+    sonarE.readnEncodeDistance2();
+    sonarE.displayDistance();
+    Serial.println(sonarE.getEncodedString());
+    stringToSend = sonarE.getEncodedString();
+  }
+
+
+  if (sonarIndex % 6 == 5) {
+    sonarF.readnEncodeDistance2();
+    sonarF.displayDistance();
+    Serial.println(sonarF.getEncodedString());
+    stringToSend = sonarF.getEncodedString();
+  }
+
+  customCharacteristic.writeValue(stringToSend.c_str());
+//  Serial.println("Sent to BLE: " + stringToSend); 
+
+}
+
 void bleControl() {
   BLEDevice central = BLE.central();
 
