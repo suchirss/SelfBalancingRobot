@@ -271,6 +271,23 @@ class _MyHomePageState extends State<MyHomePage> {
                       : null, // Disable button if not connected
                   child: const Text('PID Tuning'),
                 ),
+                ElevatedButton(
+                  onPressed: _isConnected
+                      ? () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PIDTuningPage(
+                                sendCommand: (command) {
+                                  _sendCommand(command);
+                                },
+                              ),
+                            ),
+                          );
+                        }
+                      : null, // Disable button if not connected
+                  child: const Text('Voice Commands'),
+                ),
               ],
             ),
           // **************** command buttons ****************
