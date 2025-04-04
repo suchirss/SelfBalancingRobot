@@ -1,11 +1,40 @@
 import 'dart:convert';
 import 'dart:async';
+import 'package:arduino_flutter/bluetooth_tuning.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
+import 'sonar.dart'; // import sonar class in same folder
+import 'dart:math';
 
 // define UUIDs as constants - these should match the Arduino code
 const String serviceUUID = "00000000-5EC4-4083-81CD-A10B8D5CF6EC";
 const String characteristicUUID = "00000001-5EC4-4083-81CD-A10B8D5CF6EC";
+
+// define object sizes
+const double miniMapWidth = 300;
+const double miniMapHeight = 450;
+const double robotRectWidth = 100;
+const double robotRectHeight = 50;
+const double rect50 = 50;
+const double rect10 = 10;
+
+// initialize sonar instances of type Sonar class
+Sonar sonarA = Sonar(-1, "A");
+Sonar sonarB = Sonar(-1, "B");
+Sonar sonarC = Sonar(-1, "C");
+Sonar sonarD = Sonar(-1, "D");
+Sonar sonarE = Sonar(-1, "E");
+Sonar sonarF = Sonar(-1, "F");
+
+// map secondChar String to sonar instance
+Map<String, Sonar> sonarMap = {
+  "A": sonarA,
+  "B": sonarB,
+  "C": sonarC,
+  "D": sonarD,
+  "E": sonarE,
+  "F": sonarF,
+};
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -121,9 +150,33 @@ class _MyHomePageState extends State<MyHomePage> {
     _writeCharacteristic = characteristic;
 
     _notifySub = _ble.subscribeToCharacteristic(characteristic).listen((bytes) {
-      setState(() {
-        _stateMessage = 'Data received: ${Utf8Decoder().convert(bytes)}';
-      });
+      String stringReceived = Utf8Decoder().convert(bytes);
+
+      if (stringReceived.isNotEmpty) {
+        print(stringReceived);
+        String firstChar = stringReceived.substring(0, 1);
+        // print(firstChar);
+        if (firstChar == "#") {
+          // print("$stringReceived type #");
+          String secondChar = stringReceived.substring(1, 2);
+          sonarMap[secondChar]?.decodeString(stringReceived);
+          setState(() {});
+          print("checking sonar decoding: ");
+          sonarMap[secondChar]?.displayString();
+        } else if (firstChar == "@") {
+          // print("$stringReceived type @");
+          setState(() {
+            _stateMessage = 'Data received: ${Utf8Decoder().convert(bytes)}';
+          });
+        }
+      } else {
+        print("empty string!");
+      }
+
+      // if (firstChar == "#") {
+      //   print("This is a ultrasonic sensor string");
+      //   // decode the string here
+      // }
     });
   }
 
@@ -209,15 +262,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         .center, // This ensures that the children are centered
                     children: [
                       Container(
-                          height: 450,
-                          width: 300,
+                          height: miniMapHeight,
+                          width: miniMapWidth,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                               border:
                                   Border.all(color: Colors.black, width: 4))),
                       Container(
-                        width: 100,
-                        height: 50,
+                        width: robotRectWidth,
+                        height: robotRectHeight,
                         decoration: BoxDecoration(
                             border: Border.all(color: Colors.black, width: 1)),
                         child: Image.asset(
@@ -226,14 +279,18 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       // The rectangle positioned relative to the image
                       Positioned(
-                        top: (450 - 50) /
-                            2, // Position the rectangle from the top
+                        // -------------- LEFT RECTANGLE --------------
+                        top: (miniMapHeight - rect50) /
+                            2, // Position the rectangle from the top - THIS WILL STAY CONSTANT FOR LEFT RECTANGLE
                         // top: 150,
-                        left: (300 - 10 - 100) /
-                            2, // Position the rectangle from the left
+                        left: (miniMapWidth -
+                                rect10 -
+                                robotRectWidth -
+                                2 * sonarA.get_px()) /
+                            2, // Position the rectangle from the left - WRITE FUNCTION TO VARY
                         child: Container(
-                          width: 10,
-                          height: 50,
+                          width: rect10,
+                          height: rect50,
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.black, width: 2),
                             color: Colors.deepPurple, // No fill color
@@ -241,14 +298,18 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       Positioned(
-                        top: (450 - 50) /
-                            2, // Position the rectangle from the top
+                        // -------------- RIGHT RECTANGLE --------------
+                        top: (miniMapHeight - robotRectHeight) /
+                            2, // Position the rectangle from the top - THIS WILL STAY CONSTANT FOR RIGHT RECTANGLE
                         // top: 150,
-                        left: (300 - 10 + 100) /
-                            2, // Position the rectangle from the left
+                        left: (miniMapWidth -
+                                rect10 +
+                                robotRectWidth +
+                                2 * sonarD.get_px()) /
+                            2, // Position the rectangle from the left - WRITE FUNCTION TO VARY
                         child: Container(
-                          width: 10,
-                          height: 50,
+                          width: rect10,
+                          height: rect50,
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.black, width: 2),
                             color: Colors.deepPurple, // No fill color
@@ -256,13 +317,16 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       Positioned(
-                        top: (450 - 50 - 10) /
-                            2, // Position the rectangle from the top
-                        // top: 150,
-                        left: (300 - 110) /
-                            2, // Position the rectangle from the left
+                        // -------------- TOP RECTANGLE --------------
+                        top: (miniMapHeight -
+                                robotRectHeight -
+                                rect10 -
+                                2 * min(sonarB.get_px(), sonarF.get_px())) /
+                            2, // Position the rectangle from the top - VARY
+                        left: (miniMapWidth - robotRectWidth - rect10) /
+                            2, // Position the rectangle from the left - CONSTANT
                         child: Container(
-                          width: 110,
+                          width: robotRectWidth + rect10,
                           height: 10,
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.black, width: 2),
@@ -271,11 +335,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       Positioned(
-                        top: (450 + 50) /
-                            2, // Position the rectangle from the top
-                        // top: 150,
-                        left: (300 - 110) /
-                            2, // Position the rectangle from the left
+                        // -------------- BOTTOM RECTANGLE --------------
+                        top: (miniMapHeight +
+                                rect50 +
+                                min(sonarC.get_px(), sonarE.get_px())) /
+                            2, // Position the rectangle from the top - VARY
+                        left: (miniMapWidth - robotRectWidth - rect10) /
+                            2, // Position the rectangle from the left - CONSTANT
                         child: Container(
                           width: 110,
                           height: 10,
@@ -335,15 +401,27 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     const SizedBox(width: 10),
                     ElevatedButton(
-                      onPressed:
-                          _isConnected ? () => _sendCommand('Invert') : null,
-                      child: const Text('Invert'),
+                      onPressed: _isConnected
+                          ? () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PIDTuningPage(
+                                    sendCommand: (command) {
+                                      _sendCommand(command);
+                                    },
+                                  ),
+                                ),
+                              );
+                            }
+                          : null, // Disable button if not connected
+                      child: const Text('PID Tuning'),
                     ),
                     const SizedBox(width: 10),
                     ElevatedButton(
                       onPressed:
-                          _isConnected ? () => _sendCommand('Delay') : null,
-                      child: const Text('Delay'),
+                          _isConnected ? () => _sendCommand('STOP') : null,
+                      child: const Text('STOP'),
                     ),
                   ],
                 ),

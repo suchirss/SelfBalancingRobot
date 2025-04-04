@@ -14,7 +14,7 @@ int counter = -1;
 SonarReading sonarA(A2, A3); // correct
 SonarReading sonarB(A6, A7); // correct
 SonarReading sonarC(A0, A1); // correct
-SonarReading sonarD(8, 7); // DOES NOT READ
+SonarReading sonarD(8, 7); // correct
 SonarReading sonarE(A4, A5); // correct
 SonarReading sonarF(D11, D12); // correct
 
@@ -48,7 +48,7 @@ void setup() {
   BLE.addService(customService);
 
   // Set an initial value for the characteristic
-  customCharacteristic.writeValue("Waiting for data");
+  customCharacteristic.writeValue("@Waiting for data");
 
   // Start advertising the service
   BLE.advertise();
@@ -56,11 +56,19 @@ void setup() {
   Serial.println("Bluetooth® device active, waiting for connections...");
 }
 
+unsigned long loopDuration;
+unsigned long lastLoopTime;
+
+// loop time with only bluetooth and sonar: ranged from 4000 - 42000 us (?!)
 void loop() {
 
-//  checkMemory();  // Check available memory in each loop iteration
-
+//  unsigned long currentTime = micros();  // Get current time in microseconds
+//  loopDuration = currentTime - lastLoopTime;  // Calculate loop execution time
+//  lastLoopTime = currentTime;  // Update last recorded time
+//  Serial.print("LOOP TIME: "); Serial.println(loopDuration);
   
+//  checkMemory();  // Check available memory in each loop iteratio
+
   // -- BLUETOOTH -- //
 
   // Wait for a BLE central to connect
@@ -106,7 +114,7 @@ void loop() {
         Serial.println(receivedString);
 
         // Optionally, respond by updating the characteristic's value
-        customCharacteristic.writeValue("Data received");
+        customCharacteristic.writeValue("@Data received");
         delay(10); // allows time for bluetooth command to be received
       }
     }
@@ -128,35 +136,42 @@ void loop() {
 
 void readnEncodeSixSonars(int sonarIndex) {
 
+  String stringToSend;
+//  Serial.println("stringToSend: " + stringToSend); // see that this resets
+
   if (sonarIndex % 6 == 0) {
     sonarA.readnEncodeDistance2();
     sonarA.displayDistance();
     Serial.println(sonarA.getEncodedString());
+    stringToSend = sonarA.getEncodedString();
   }
 
   if (sonarIndex % 6 == 1) {
     sonarB.readnEncodeDistance2();
     sonarB.displayDistance();
     Serial.println(sonarB.getEncodedString());
+    stringToSend = sonarB.getEncodedString();
   }
 
   if (sonarIndex % 6 == 2) {
     sonarC.readnEncodeDistance2();
     sonarC.displayDistance();
     Serial.println(sonarC.getEncodedString());  
+    stringToSend = sonarC.getEncodedString();
   }
 
   if (sonarIndex % 6 == 3) {
-//    sonarD.readnEncodeDistance2();
-//    sonarD.displayDistance();
-//    Serial.println(sonarD.getEncodedString());
-      Serial.println("Sonar D");
+    sonarD.readnEncodeDistance2();
+    sonarD.displayDistance();
+    Serial.println(sonarD.getEncodedString());
+    stringToSend = sonarD.getEncodedString();
   }
 
   if (sonarIndex % 6 == 4) {
     sonarE.readnEncodeDistance2();
     sonarE.displayDistance();
     Serial.println(sonarE.getEncodedString());
+    stringToSend = sonarE.getEncodedString();
   }
 
 
@@ -164,7 +179,12 @@ void readnEncodeSixSonars(int sonarIndex) {
     sonarF.readnEncodeDistance2();
     sonarF.displayDistance();
     Serial.println(sonarF.getEncodedString());
+    stringToSend = sonarF.getEncodedString();
   }
+
+  customCharacteristic.writeValue(stringToSend.c_str());
+//  Serial.println("Sent to BLE: " + stringToSend); 
+
 }
 
 void setupBluetooth() {
@@ -187,7 +207,7 @@ void setupBluetooth() {
   BLE.addService(customService);
 
   // Set an initial value for the characteristic
-  customCharacteristic.writeValue("Waiting for data");
+  customCharacteristic.writeValue("@Waiting for data");
 
   // Start advertising the service
   BLE.advertise();
