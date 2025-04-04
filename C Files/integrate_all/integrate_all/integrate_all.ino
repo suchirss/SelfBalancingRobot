@@ -24,9 +24,9 @@ float leftPWM = 0, rightPWM = 0, forwardPWM = 0, backwardPWM = 0;
 int forwardBias = 0;
 
 // ---------------  PID Tuning  ---------------
-float Kp = 5;    //15-25
-float Ki = 200; //250;   //400
-float Kd = 0.05; //0.01;  //0.01
+float Kp = 16;    //15-25
+float Ki = 750; //250;   //400
+float Kd = 0.35; //0.01;  //0.01
 
 // ---------------  Variable Declarations  ---------------
 float k = 0.95;
