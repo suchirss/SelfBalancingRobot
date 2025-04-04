@@ -126,7 +126,7 @@ void loop() {
 // ---------------  Funtion Declaration  ---------------
 void bleControl() {
   BLEDevice central = BLE.central();
-  Serial.println("Loop running!");
+//  Serial.println("Loop running!");
 
   // Check if the characteristic was written
   if (customCharacteristic.written()) {
