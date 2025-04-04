@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:async';
 import 'package:arduino_flutter/bluetooth_tuning.dart';
+import 'package:arduino_flutter/voice_comms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'sonar.dart'; // import sonar class in same folder
@@ -272,21 +273,21 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: const Text('PID Tuning'),
                 ),
                 ElevatedButton(
-                  onPressed: _isConnected
-                      ? () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PIDTuningPage(
-                                sendCommand: (command) {
-                                  _sendCommand(command);
-                                },
-                              ),
-                            ),
-                          );
-                        }
-                      : null, // Disable button if not connected
-                  child: const Text('Voice Commands'),
+                  onPressed: // _isConnected ?
+                      () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => VoiceCommsPage(
+                          sendCommand: (command) {
+                            _sendCommand(command);
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                  // : null, // Disable button if not connected
+                  child: const Text('Voice Comms'),
                 ),
               ],
             ),
@@ -448,22 +449,22 @@ class _MyHomePageState extends State<MyHomePage> {
                     const SizedBox(width: 20),
 
                     // Circle (customizable)
-                    Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.red, // Circle color
-                        border: Border.all(color: Colors.black, width: 2),
+                    ElevatedButton(
+                      onPressed:
+                          _isConnected ? () => _sendCommand("STOP") : null,
+                      style: ElevatedButton.styleFrom(
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(20),
+                        backgroundColor: Colors.red, // Button background color
+                        foregroundColor:
+                            Colors.white, // Text (foreground) color
+                        side: const BorderSide(color: Colors.black, width: 2),
                       ),
-                      child: const Center(
-                        child: Text(
-                          'STOP',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      child: const Text(
+                        'STOP',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
