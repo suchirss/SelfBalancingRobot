@@ -1,7 +1,7 @@
 #include "Arduino_BMI270_BMM150.h"
 #include "sonar_reading_class.h"
 #include <ArduinoBLE.h>
-
+  
 // initialize constants
 #define BUFFER_SIZE 20
 

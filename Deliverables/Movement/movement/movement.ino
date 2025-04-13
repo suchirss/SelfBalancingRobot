@@ -53,7 +53,7 @@ void setup() {
 
   // PID library related setups
   myPID.SetOutputLimits(-255, 255);
-  myPID.SetSampleTime(10);
+  myPID.SetSampleTime(8);
   myPID.SetMode(AUTOMATIC);
   SampleRate = IMU.gyroscopeSampleRate();
 
@@ -224,8 +224,8 @@ void delayedControl() {
       flag = 0;
     }
     if (commandExecuting) {
-      if (comp_angle > 0) moveWheelsRight(abs(PWM));
-      else if (comp_angle < 0) moveWheelsLeft(abs(PWM));
+      if (comp_angle > 0) moveWheelsRight2(abs(PWM));
+      else if (comp_angle < 0) moveWheelsLeft2(abs(PWM));
       else stopWheels();
     }
     else if (micros() - rightTime > 4000000) {
@@ -322,7 +322,7 @@ void stopWheels() {
   analogWrite(pwmB2, 255);
 }
 
-void moveWheelsLeft(int pwmInput) {
+void moveWheelsLeft2(int pwmInput) {
   float newSpeed = 255 - pwmInput + 75;
   if (newSpeed > 255) newSpeed = 255;
   analogWrite(pwmA1, newSpeed - 75);
@@ -331,7 +331,7 @@ void moveWheelsLeft(int pwmInput) {
   analogWrite(pwmB2, 255);
 }
 
-void moveWheelsRight(int pwmInput) {
+void moveWheelsRight2(int pwmInput) {
   float newSpeed = 255 - pwmInput + 75;
   if (newSpeed > 255) newSpeed = 255;
   analogWrite(pwmA1, 255);
@@ -340,7 +340,7 @@ void moveWheelsRight(int pwmInput) {
   analogWrite(pwmB2, newSpeed-75);
 }
 
-void moveWheelsLeft2(int pwmInput) {
+void moveWheelsLeft(int pwmInput) {
   float newSpeed = 255 - pwmInput + 75;
   if (newSpeed > 255) newSpeed = 255;
   analogWrite(pwmA1, newSpeed);
@@ -349,7 +349,7 @@ void moveWheelsLeft2(int pwmInput) {
   analogWrite(pwmB2, 255);
 }
 
-void moveWheelsRight2(int pwmInput) {
+void moveWheelsRight(int pwmInput) {
   float newSpeed = 255 - pwmInput + 75;
   if (newSpeed > 255) newSpeed = 255;
   analogWrite(pwmA1, 255);
