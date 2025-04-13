@@ -34,10 +34,10 @@ class Sonar {
         _px = 2.0 * inputCM;
       }
     } else if (_ID == "A" || _ID == "D") {
-      if (inputCM > 50) {
+      if (inputCM > 100) {
         _px = 100;
       } else {
-        _px = 2.0 * inputCM;
+        _px = 1.0 * inputCM;
       }
     }
   }

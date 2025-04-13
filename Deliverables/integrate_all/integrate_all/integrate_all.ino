@@ -119,7 +119,7 @@ void loop() {
   Setpoint = 0.4;
   balance();
   }
-  else if (receivedCommand == "BACKWARD") {
+    else if (receivedCommand == "BACKWARD") { 
     Setpoint = -0.4;
     balance();
   }

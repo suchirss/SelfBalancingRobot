@@ -49,7 +49,9 @@ class _VoiceCommsPageState extends State<VoiceCommsPage> {
   void _sendCommand() {
     const validCommands = {
       "forward": "FORWARD",
+      "forwards": "FORWARD",
       "backward": "BACKWARD",
+      "backwards": "BACKWARD",
       "left": "LEFT",
       "right": "RIGHT",
       "stop": "STOP",
